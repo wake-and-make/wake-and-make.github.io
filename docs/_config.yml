@@ -1,0 +1,9 @@
+# more themes at https://pages.github.com/themes/
+theme: jekyll-theme-minimal
+
+title: Wake & Make
+description: Wake up to your dreams and make it happen.
+
+# Additionally, you may choose to set the following optional variables:
+# show_downloads: ["true" or "false" (unquoted) to indicate whether to provide a download URL]
+# google_analytics: [Your Google Analytics tracking ID]
