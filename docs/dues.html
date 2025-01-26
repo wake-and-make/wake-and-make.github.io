@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/wakenmake_favicon.svg" />
+    <title>Wake and Make - Membership & Dues</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: url('img/background-lite.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: #fff;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header img {
+            margin: 20px 0;
+        }
+        header .tagline {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .cta-buttons a {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        .cta-buttons a:hover {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            color: white;
+        }
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .services .service-item {
+            position: relative;
+            max-width: calc(33.333% - 20px);
+            flex: 1 1 calc(33.333% - 20px);
+            box-sizing: border-box;
+        }
+        .services .service-item .shadow {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 0;
+        }
+        .services .service-item img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .services {
+                gap: 60px;
+            }
+            .services .service-item {
+                max-width: 90%;
+                flex: 1 1 100%;
+            }
+        }
+        .about p, th {
+            text-align: left;
+        }
+        th, td {
+            padding-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <header>
+        <img src="img/wakenmake_banner.svg">
+        <div class="tagline">Wake, make, rinse, repeat.</div>
+        <div class="cta-buttons">
+            <a href="index.html">Home</a>
+            <a href="https://www.jotform.com/sign/241615166824053/invite/01j01p5rcvcb930335f80b20ba">Sign Waiver</a>
+            <a href="mailto:contact@wakenmake.shop">Contact</a>
+        </div>
+    </header>
+
+    <section class="about">
+        <p>Wake'n'Make has a sliding-scale fee structure to encourage folks of all financial ability to participate. There are three schedules of dues, based on either day-use (weekday vs. weekend) or per-month usage. The fee schedule is given in the table below.</p>
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Fee Schedule</th>
+                <th>Minimum Fee</th>
+                <th>Maximum Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Monthly</td>
+                <td>$50</td>
+                <td>$200</td>
+              </tr>
+              <tr>
+                <td>Daily (weekday)</td>
+                <td>$10</td>
+                <td>$20</td>
+              </tr>
+              <tr>
+                <td>Daily (weekend)</td>
+                <td>$15</td>
+                <td>$25</td>
+              </tr>
+            </tbody>
+          </table>
+        <p>Wake'n'Make shop accepts payments via cash or Venmo (<a href="https://account.venmo.com/u/wakenmake" style="color:bisque">@wakenmake</a>). Please add a note to your Venmo payment with the purpose of the payment (e.g., "Monthly Dues", "Daily Dues", etc.).</p>
+    </section>
+</body>
+</html>
