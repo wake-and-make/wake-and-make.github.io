@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../img/wakenmake_favicon.svg" />
+    <title>Wake and Make - Example Project</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: url('../../img/background-lite.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: #fff;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header img {
+            margin: 20px 0;
+        }
+        header .tagline {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .cta-buttons a {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        .cta-buttons a:hover {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            color: white;
+        }
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .project-header {
+            text-align: center;
+        }
+        .project-header h2 {
+            margin: 0 0 20px 0;
+        }
+        .project-header p {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .project-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .project-gallery img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .project-gallery iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        .project-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        .project-details .detail {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        .project-details h3 {
+            margin-top: 0;
+        }
+        @media (max-width: 768px) {
+            .project-details .detail {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <header>
+        <img src="../../img/wakenmake_banner.svg">
+        <div class="tagline">Wake, make, rinse, repeat.</div>
+        <div class="cta-buttons">
+            <a href="../../projects.html">Back to Projects</a>
+            <a href="../../index.html">Home</a>
+            <a href="../../dues.html">Membership & Dues</a>
+            <a href="https://www.jotform.com/sign/241615166824053/invite/01j01p5rcvcb930335f80b20ba">Sign Waiver</a>
+            <a href="mailto:contact@wakenmake.shop">Contact</a>
+        </div>
+    </header>
+
+    <section>
+        <div class="project-content">
+            <div class="project-header">
+                <h2>Primitive Obsession</h2>
+                <p>A large-scale volumetric display debuting at Burning Man 2025.</p>
+            </div>
+
+            <div class="project-gallery">
+                <img src="demo.webp" alt="Project Demo">
+                <iframe src="drawing.pdf" title="Project Drawing"></iframe>
+            </div>
+
+            <div class="project-details">
+                <div class="detail">
+                    <h3>Project Details</h3>
+                    <p><i>Primitive Obsession</i> is an homage to the beauty of simple geometric shapes. The installation showcases a collection of digital works, including interactive games, crowd reactive effects, and live VJ'd music-reactive visuals.</br></br>The installation stands 12' x 12' x 12' in an open frame, with the LEDs hanging freely from above. Revelers are free to enter the installation and walk around inside, pushing the LED strands aside as if in an inverted field of digital grass. Interactivity is facilitated by way of depth cameras and control podiums with arcade buttons.</br></br>The installation is ruggedized by way of steel cabling reinforcing the LED curtains and plastic sleeves mounted on all strands. The structure is ratchet strapped to the ground and is designed with a minimal drag cross section to withstand the high winds of the playa.</p>
+                    <p><a href="https://photos.app.goo.gl/kigScDbedk4gayHC9" target="_blank" style="color: white; text-decoration: underline;">View Showreel</a></p>
+                </div>
+                <div class="detail">
+                    <h3>Technical Specifications</h3>
+                    <ul>
+                        <li>20 x 20 x 20 WS2812 LEDs</li>
+                        <li>2x COTS ArtNET 12-channel controllers</li>
+                        <li>2x 40A 5V power supplies</li>
+                        <li>Raspberry Pi</li>
+                        <li>Industrial ethernet switch</li>
+                        <li>OAK-D depth camera</li>
+                        <li>TouchDesigner</li>
+                        <li>Rust/GLSL host application</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html> 

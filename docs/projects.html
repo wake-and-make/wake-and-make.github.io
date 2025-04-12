@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/wakenmake_favicon.svg" />
+    <title>Wake and Make - Portfolio</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: url('img/background-lite.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: #fff;
+        }
+        header h1 {
+            margin: 0;
+        }
+        header img {
+            margin: 20px 0;
+        }
+        header .tagline {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .cta-buttons a {
+            background: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        .cta-buttons a:hover {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            color: white;
+        }
+        .projects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .project-item {
+            position: relative;
+            max-width: 300px;
+            flex: 0 0 300px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .project-item .image-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .project-item .shadow {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 0;
+        }
+        .project-item img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: auto;
+            display: block;
+            max-width: 100%;
+        }
+        .project-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.5em;
+        }
+        .project-item .subtitle {
+            margin: 0 0 10px 0;
+            font-style: italic;
+            opacity: 0.8;
+            background: black;
+            padding: 10px;
+            display: inline-block;
+        }
+        .project-item p {
+            margin: 0;
+        }
+        @media (max-width: 768px) {
+            .projects {
+                gap: 40px;
+                padding: 0 10px;
+            }
+            .project-item {
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <header>
+        <img src="img/wakenmake_banner.svg">
+        <div class="tagline">Wake, make, rinse, repeat.</div>
+        <div class="cta-buttons">
+            <a href="index.html">Home</a>
+            <a href="dues.html">Membership & Dues</a>
+            <a href="https://www.jotform.com/sign/241615166824053/invite/01j01p5rcvcb930335f80b20ba">Sign Waiver</a>
+            <a href="mailto:contact@wakenmake.shop">Contact</a>
+        </div>
+    </header>
+
+    <section class="summary">
+        <p>See below for a selection of projects completed by the Wake and Make collective.</p>
+    </section>
+
+    <section class="projects">
+        <div class="project-item">
+            <div class="image-container">
+                <div class="shadow"></div>
+                <a href="projects/primitive_obsession/index.html">
+                    <img src="projects/primitive_obsession/thumbnail.webp" alt="Primitive Obsession">
+                </a>
+            </div>
+            <div class="subtitle"><i>Primitive Obsession</i></div>
+        </div>
+    </section>
+</body>
+</html> 
