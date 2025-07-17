@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../img/wakenmake_favicon.svg" />
-    <title>Wake and Make - Example Project</title>
+    <title>Wake and Make - Primitive Obsession</title>
     <style>
         body {
             font-family: monospace;
@@ -87,20 +87,25 @@
             margin: 0 auto;
         }
         .project-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             justify-content: center;
+            margin: 0 auto;
+            max-width: 1000px;
         }
         .project-gallery img {
-            max-width: 100%;
+            width: 100%;
             height: auto;
             display: block;
+            border-radius: 8px;
         }
         .project-gallery iframe {
             width: 100%;
-            height: 600px;
+            height: 400px;
             border: none;
+            border-radius: 8px;
+            grid-column: 1 / -1;
         }
         .project-details {
             display: flex;
@@ -120,6 +125,61 @@
             .project-details .detail {
                 min-width: 100%;
             }
+            .project-gallery {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .project-gallery iframe {
+                height: 300px;
+            }
+        }
+        
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+        }
+        
+        .lightbox img {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .lightbox .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .lightbox .close:hover {
+            color: #bbb;
+        }
+        
+        .gallery-img {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-img:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -146,31 +206,74 @@
             </div>
 
             <div class="project-gallery">
-                <img src="demo.webp" alt="Project Demo">
+                <img src="demo.webp" alt="Project Demo" class="gallery-img" onclick="openLightbox(this)">
+                <img src="2x2x2_v2.png" alt="2x2x2 Array Rendering" class="gallery-img" onclick="openLightbox(this)">
+                <img src="3x3x3_v2.png" alt="3x3x3 Array Rendering" class="gallery-img" onclick="openLightbox(this)">
                 <iframe src="drawing.pdf" title="Project Drawing"></iframe>
             </div>
 
             <div class="project-details">
                 <div class="detail">
                     <h3>Project Details</h3>
-                    <p><i>Primitive Obsession</i> is an homage to the beauty of simple geometric shapes. The installation showcases a collection of digital works, including interactive games, crowd reactive effects, and live VJ'd music-reactive visuals.</br></br>The installation stands 12' x 12' x 12' in an open frame, with the LEDs hanging freely from above. Revelers are free to enter the installation and walk around inside, pushing the LED strands aside as if in an inverted field of digital grass. Interactivity is facilitated by way of depth cameras and control podiums with arcade buttons.</br></br>The installation is ruggedized by way of steel cabling reinforcing the LED curtains and plastic sleeves mounted on all strands. The structure is ratchet strapped to the ground and is designed with a minimal drag cross section to withstand high winds.</p>
+                    <p><i>Primitive Obsession</i> is an homage to the beauty of simple geometric shapes. The installation showcases a collection of digital works, including interactive games, crowd reactive effects, and live VJ'd music-reactive visuals.</br></br>The installation stands 12' x 12' x 12' in an open frame, with the LEDs hanging freely from above. Revelers are free to enter the installation and walk around inside, pushing the LED strands aside as if in an inverted field of digital grass. Interactivity is facilitated by way of depth cameras and control podiums with arcade buttons.</br></br>The installation is ruggedized by way of steel cabling reinforcing the LED curtains and plastic sleeves mounted on all strands. The structure is ratchet strapped to the ground and is designed with a minimal drag cross section to withstand high winds. The installation is also modular; the conduit frame can be scaled arbitrarily in all dimensions, with additional LED modules added as needed to achieve any multiple of 10' x 10' x 10'.</p>
                     <p><a href="https://photos.app.goo.gl/kigScDbedk4gayHC9" target="_blank" style="color: white; text-decoration: underline;">View Showreel</a></p>
                 </div>
                 <div class="detail">
                     <h3>Technical Specifications</h3>
+                    <h4>Per Module:</h4>
                     <ul>
-                        <li>20 x 20 x 20 WS2812 LEDs</li>
+                        <li>20 x 20 x 20 WS2815 LEDs</li>
                         <li>2x COTS ArtNET 12-channel controllers</li>
-                        <li>2x 40A 5V power supplies</li>
-                        <li>Raspberry Pi</li>
+                        <li>2x 50A 12V power supplies</li>
                         <li>Industrial ethernet switch</li>
+                        <li>Custom 10' x 10' x 10' EMT conduit frame</li>
+                    </ul>
+                    <h4>Per System:</h4>
+                    <ul>
+                        <li>Mac Mini</li>
                         <li>OAK-D depth camera</li>
                         <li>TouchDesigner</li>
-                        <li>Rust/GLSL host application</li>
+                        <li>Rust/Python orchestration layer</li>
+                        <li>4x custom PoE-enabled control podiums</li>
+                    </ul>
+                    <h4>Software & Firmware:</h4>
+                    <ul>
+                        <li><a href="https://github.com/fughilli/volumetric-display" target="_blank" style="color: white; text-decoration: underline;">Main Display Software</a> - Core volumetric display control system</li>
+                        <li><a href="https://github.com/fughilli/cube_ethernet_controller" target="_blank" style="color: white; text-decoration: underline;">Control Podium Firmware</a> - Custom ethernet controller for interactive podiums</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
+    
+    <!-- Lightbox modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        function openLightbox(img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
 </body>
 </html> 
