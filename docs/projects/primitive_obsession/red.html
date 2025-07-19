@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../img/wakenmake_favicon.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <title>Wake and Make - Primitive Obsession (Red)</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #000000;
+            color: #ff0000;
+            overflow-x: hidden;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: #ff0000;
+        }
+        header .tagline {
+            font-size: 2em;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .cta-buttons a {
+            background: #000000;
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cta-buttons a:hover {
+            background: #ff0000;
+            color: #000000;
+        }
+        section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            color: #ff0000;
+        }
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .project-header {
+            text-align: center;
+        }
+        .project-header h2 {
+            margin: 0 0 20px 0;
+            color: #ff0000;
+            font-size: 3em;
+        }
+        .project-header p {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #ff0000;
+            font-size: 1.2em;
+        }
+        
+        /* Polaroid Slideshow */
+        .polaroid-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+        
+        .polaroid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff0000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+            transition: all 0.8s ease;
+            opacity: 0;
+            transform-origin: center;
+            width: 2.1in;
+            height: 3.4in;
+        }
+        
+        .polaroid img {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1.8in;
+            height: 2.4in;
+            object-fit: cover;
+            display: block;
+            background: #ff0000;
+        }
+        
+        .polaroid-label {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            font-family: 'Permanent Marker', cursive;
+            font-size: 20px;
+            color: #000000;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90%;
+        }
+        
+        .polaroid.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--rotation));
+            z-index: 10;
+        }
+        
+        .polaroid.next {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--rotation)) scale(0.9);
+            z-index: 9;
+        }
+        
+        .polaroid.prev {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--rotation)) scale(0.8);
+            z-index: 8;
+        }
+        
+        .polaroid.exit {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--exit-rotation)) translateX(300px);
+            z-index: 0;
+        }
+        
+        .polaroid.exit-left {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--exit-rotation)) translateX(-300px);
+            z-index: 0;
+        }
+        
+        .project-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .project-details .detail {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        .project-details h3 {
+            margin-top: 0;
+            color: #ff0000;
+        }
+        .project-details h4 {
+            color: #ff0000;
+        }
+        .project-details ul {
+            color: #ff0000;
+        }
+        .project-details a {
+            color: #ff0000;
+            text-decoration: underline;
+        }
+        .project-details a:hover {
+            color: #ffffff;
+        }
+        @media (max-width: 768px) {
+            .project-details .detail {
+                min-width: 100%;
+            }
+            .polaroid-container {
+                height: 400px;
+            }
+            .polaroid {
+                width: 135px;
+                height: 214px;
+            }
+            .polaroid img {
+                width: 112px;
+                height: 76px;
+                object-fit: contain;
+                background: #ffffff;
+            }
+        }
+        
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            cursor: pointer;
+        }
+        
+        .lightbox img {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .lightbox .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #ff0000;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .lightbox .close:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <header>
+        <div class="tagline">Primitive Obsession</div>
+        <div class="cta-buttons">
+            <a href="index.html">Original Version</a>
+            <a href="../../projects.html">Back to Projects</a>
+            <a href="../../index.html">Home</a>
+        </div>
+    </header>
+
+    <section>
+        <div class="project-content">
+            <div class="project-header">
+                <h2>Primitive Obsession</h2>
+                <p>A large-scale volumetric display debuting in 2025.</p>
+            </div>
+
+            <div class="polaroid-container">
+                <div class="polaroid active" onclick="openLightbox(this.querySelector('img'))">
+                    <img src="demo_red.webp" alt="Project Demo">
+                    <div class="polaroid-label">demo</div>
+                </div>
+                <div class="polaroid" onclick="openLightbox(this.querySelector('img'))">
+                    <img src="2x2x2_v2_red.jpg" alt="2x2x2 Array Rendering">
+                    <div class="polaroid-label">2x2x2 array</div>
+                </div>
+                <div class="polaroid" onclick="openLightbox(this.querySelector('img'))">
+                    <img src="3x3x3_v2_red.jpg" alt="3x3x3 Array Rendering">
+                    <div class="polaroid-label">3x3x3 array</div>
+                </div>
+            </div>
+
+            <div class="project-details">
+                <div class="detail">
+                    <h3>Project Details</h3>
+                    <p><i>Primitive Obsession</i> is an homage to the beauty of simple geometric shapes. The installation showcases a collection of digital works, including interactive games, crowd reactive effects, and live VJ'd music-reactive visuals.</br></br>The installation stands 12' x 12' x 12' in an open frame, with the LEDs hanging freely from above. Revelers are free to enter the installation and walk around inside, pushing the LED strands aside as if in an inverted field of digital grass. Interactivity is facilitated by way of depth cameras and control podiums with arcade buttons.</br></br>The installation is ruggedized by way of steel cabling reinforcing the LED curtains and plastic sleeves mounted on all strands. The structure is ratchet strapped to the ground and is designed with a minimal drag cross section to withstand high winds. The installation is also modular; the conduit frame can be scaled arbitrarily in all dimensions, with additional LED modules added as needed to achieve any multiple of 10' x 10' x 10'.</p>
+                    <p><a href="https://photos.app.goo.gl/kigScDbedk4gayHC9" target="_blank">View Showreel</a></p>
+                </div>
+                <div class="detail">
+                    <h3>Technical Specifications</h3>
+                    <h4>Per Module:</h4>
+                    <ul>
+                        <li>20 x 20 x 20 WS2815 LEDs</li>
+                        <li>2x COTS ArtNET 12-channel controllers</li>
+                        <li>2x 50A 12V power supplies</li>
+                        <li>Industrial ethernet switch</li>
+                        <li>Custom 10' x 10' x 10' EMT conduit frame</li>
+                    </ul>
+                    <h4>Per System:</h4>
+                    <ul>
+                        <li>Mac Mini</li>
+                        <li>OAK-D depth camera</li>
+                        <li>TouchDesigner</li>
+                        <li>Rust/Python orchestration layer</li>
+                        <li>4x custom PoE-enabled control podiums</li>
+                    </ul>
+                    <h4>Software & Firmware:</h4>
+                    <ul>
+                        <li><a href="https://github.com/fughilli/volumetric-display" target="_blank">Main Display Software</a> - Core volumetric display control system</li>
+                        <li><a href="https://github.com/fughilli/cube_ethernet_controller" target="_blank">Control Podium Firmware</a> - Custom ethernet controller for interactive podiums</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Lightbox modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        // Polaroid slideshow
+        const polaroids = document.querySelectorAll('.polaroid');
+        let currentIndex = 0;
+        let isTransitioning = false;
+        
+        // Initialize random rotations for each polaroid
+        polaroids.forEach((polaroid, index) => {
+            const randomRotation = (Math.random() - 0.5) * 20; // Range: -10 to +10 degrees
+            polaroid.style.setProperty('--rotation', `${randomRotation}deg`);
+        });
+        
+        function updatePolaroidState(polaroid, index, totalPolaroids) {
+            const stackPosition = (index - currentIndex + totalPolaroids) % totalPolaroids;
+            
+            // Calculate z-index based on stack position
+            const zIndex = totalPolaroids - stackPosition;
+            
+            // Calculate scale based on stack position
+            const scale = Math.max(0.6, 1 - (stackPosition * 0.1));
+            
+            // Calculate opacity based on stack position
+            const opacity = Math.max(0.1, 1 - (stackPosition * 0.3));
+            
+            // Apply transformations
+            const rotation = polaroid.style.getPropertyValue('--rotation') || '0deg';
+            polaroid.style.transform = `translate(-50%, -50%) rotate(${rotation}) scale(${scale})`;
+            polaroid.style.opacity = opacity;
+            polaroid.style.zIndex = zIndex;
+        }
+        
+        function updatePolaroids() {
+            const totalPolaroids = polaroids.length;
+            
+            polaroids.forEach((polaroid, index) => {
+                updatePolaroidState(polaroid, index, totalPolaroids);
+            });
+        }
+        
+        function animateExit(polaroid) {
+            return new Promise((resolve) => {
+                const exitDirection = Math.random() < 0.5 ? 'right' : 'left';
+                let exitRotation;
+                
+                if (exitDirection === 'right') {
+                    exitRotation = 5 + Math.random() * 10; // 5-15 degrees
+                } else {
+                    exitRotation = -15 + Math.random() * 10; // -15 to -5 degrees
+                }
+                
+                const translateX = exitDirection === 'right' ? 300 : -300;
+                
+                polaroid.style.transition = 'all 0.8s ease';
+                polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg) translateX(${translateX}px)`;
+                polaroid.style.opacity = '0';
+                polaroid.style.zIndex = '0';
+                
+                // Store the exit rotation as the new base rotation
+                polaroid.style.setProperty('--rotation', `${exitRotation}deg`);
+                
+                setTimeout(resolve, 800);
+            });
+        }
+        
+        async function nextPolaroid() {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            const currentPolaroid = polaroids[currentIndex];
+            
+            // Animate exit
+            await animateExit(currentPolaroid);
+            
+            // Update stack
+            currentIndex = (currentIndex + 1) % polaroids.length;
+            updatePolaroids();
+            
+            // Reset transition state
+            isTransitioning = false;
+        }
+        
+        // Auto-advance slideshow
+        setInterval(() => {
+            if (!isTransitioning) {
+                nextPolaroid();
+            }
+        }, 3000);
+        
+        // Initialize
+        updatePolaroids();
+        
+        // Lightbox functions
+        function openLightbox(img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightbox.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html> 
