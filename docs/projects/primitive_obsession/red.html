@@ -106,8 +106,9 @@
             transition: all 0.8s ease;
             opacity: 0;
             transform-origin: center;
-            width: 2.1in;
-            height: 3.4in;
+            width: 1.8in;
+            height: 2.4in;
+            /* Dimensions will be set dynamically by JavaScript */
         }
         
         .polaroid img {
@@ -115,11 +116,12 @@
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1.8in;
-            height: 2.4in;
             object-fit: cover;
             display: block;
             background: #ff0000;
+            width: 1.8in;
+            height: 2.4in;
+            /* Dimensions will be set dynamically by JavaScript */
         }
         
         .polaroid-label {
@@ -203,7 +205,7 @@
             .polaroid-container {
                 height: 400px;
             }
-            .polaroid {
+            /*.polaroid {
                 width: 135px;
                 height: 214px;
             }
@@ -212,7 +214,7 @@
                 height: 76px;
                 object-fit: contain;
                 background: #ffffff;
-            }
+            }*/
         }
         
         /* Lightbox styles */
@@ -330,16 +332,99 @@
     </div>
 
     <script>
+        // Instax format specifications
+        const INSTAX_FORMATS = {
+            mini: {
+                name: 'mini',
+                overall: { width: 2.1, height: 3.4 },
+                image: { width: 1.8, height: 2.4 },
+                aspectRatio: 1.8 / 2.4 // 0.75 (portrait)
+            },
+            square: {
+                name: 'square',
+                overall: { width: 2.8, height: 3.4 },
+                image: { width: 2.4, height: 2.4 },
+                aspectRatio: 2.4 / 2.4 // 1.0 (square)
+            },
+            wide: {
+                name: 'wide',
+                overall: { width: 4.25, height: 3.4 },
+                image: { width: 3.9, height: 2.4 },
+                aspectRatio: 3.9 / 2.4 // 1.625 (landscape)
+            }
+        };
+        
         // Polaroid slideshow
         const polaroids = document.querySelectorAll('.polaroid');
         let currentIndex = 0;
         let isTransitioning = false;
-        
+
         // Initialize random rotations for each polaroid
         polaroids.forEach((polaroid, index) => {
             const randomRotation = (Math.random() - 0.5) * 20; // Range: -10 to +10 degrees
             polaroid.style.setProperty('--rotation', `${randomRotation}deg`);
-        });
+        }); 
+
+        function getImageAspectRatio(img) {
+            return new Promise((resolve) => {
+                if (img.complete) {
+                    resolve(img.naturalWidth / img.naturalHeight);
+                } else {
+                    img.onload = () => resolve(img.naturalWidth / img.naturalHeight);
+                }
+            });
+        }
+        
+        function findClosestFormat(imageAspectRatio) {
+            let closestFormat = 'mini';
+            let smallestDifference = Math.abs(imageAspectRatio - INSTAX_FORMATS.mini.aspectRatio);
+            
+            for (const [formatName, format] of Object.entries(INSTAX_FORMATS)) {
+                const difference = Math.abs(imageAspectRatio - format.aspectRatio);
+                if (difference < smallestDifference) {
+                    smallestDifference = difference;
+                    closestFormat = formatName;
+                }
+            }
+            
+            return INSTAX_FORMATS[closestFormat];
+        }
+        
+        function applyFormatToPolaroid(polaroid, format) {
+            const imgElement = polaroid.querySelector('img');
+            
+            // Apply overall polaroid dimensions (use actual inch sizes)
+            polaroid.style.width = `${format.overall.width}in`;
+            polaroid.style.height = `${format.overall.height}in`;
+            
+            // Apply image container dimensions (use actual inch sizes)
+            imgElement.style.width = `${format.image.width}in`;
+            imgElement.style.height = `${format.image.height}in`;
+        }
+        
+        // Initialize polaroids with appropriate formats
+        async function initializePolaroids() {
+            for (let i = 0; i < polaroids.length; i++) {
+                const polaroid = polaroids[i];
+                const img = polaroid.querySelector('img');
+                
+                // Get image aspect ratio
+                const aspectRatio = await getImageAspectRatio(img);
+                
+                // Find closest format
+                const format = findClosestFormat(aspectRatio);
+                
+                // Apply format to polaroid
+                applyFormatToPolaroid(polaroid, format);
+                
+                // Initialize random rotation
+                const randomRotation = (Math.random() - 0.5) * 20;
+                polaroid.style.setProperty('--rotation', `${randomRotation}deg`);
+            }
+            
+            // Start the slideshow after initialization
+            updatePolaroids();
+        }
         
         function updatePolaroidState(polaroid, index, totalPolaroids) {
             const stackPosition = (index - currentIndex + totalPolaroids) % totalPolaroids;
@@ -350,13 +435,10 @@
             // Calculate scale based on stack position
             const scale = Math.max(0.6, 1 - (stackPosition * 0.1));
             
-            // Calculate opacity based on stack position
-            const opacity = Math.max(0.1, 1 - (stackPosition * 0.3));
-            
-            // Apply transformations
+            // Apply transformations (no opacity changes)
             const rotation = polaroid.style.getPropertyValue('--rotation') || '0deg';
             polaroid.style.transform = `translate(-50%, -50%) rotate(${rotation}) scale(${scale})`;
-            polaroid.style.opacity = opacity;
+            polaroid.style.opacity = '1';
             polaroid.style.zIndex = zIndex;
         }
         
@@ -374,17 +456,16 @@
                 let exitRotation;
                 
                 if (exitDirection === 'right') {
-                    exitRotation = 5 + Math.random() * 10; // 5-15 degrees
+                    exitRotation = 1 + Math.random() * 5; // 1-6 degrees
                 } else {
-                    exitRotation = -15 + Math.random() * 10; // -15 to -5 degrees
+                    exitRotation = -6 + Math.random() * 5; // -6 to -1 degrees
                 }
                 
-                const translateX = exitDirection === 'right' ? 300 : -300;
+                const translateX = exitDirection === 'right' ? 600 : -600;
                 
                 polaroid.style.transition = 'all 0.8s ease';
                 polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg) translateX(${translateX}px)`;
-                polaroid.style.opacity = '0';
-                polaroid.style.zIndex = '0';
+                polaroid.style.opacity = '1';
                 
                 // Store the exit rotation as the new base rotation
                 polaroid.style.setProperty('--rotation', `${exitRotation}deg`);
@@ -418,7 +499,7 @@
         }, 3000);
         
         // Initialize
-        updatePolaroids();
+        initializePolaroids();
         
         // Lightbox functions
         function openLightbox(img) {
