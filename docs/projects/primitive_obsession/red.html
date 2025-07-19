@@ -437,6 +437,7 @@
             
             // Apply transformations (no opacity changes)
             const rotation = polaroid.style.getPropertyValue('--rotation') || '0deg';
+            polaroid.style.transition = 'all 0.3s ease';
             polaroid.style.transform = `translate(-50%, -50%) rotate(${rotation}) scale(${scale})`;
             polaroid.style.opacity = '1';
             polaroid.style.zIndex = zIndex;
@@ -463,14 +464,26 @@
                 
                 const translateX = exitDirection === 'right' ? 600 : -600;
                 
+                // Step 1: Translate in X to the left or right
                 polaroid.style.transition = 'all 0.8s ease';
                 polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg) translateX(${translateX}px)`;
-                polaroid.style.opacity = '1';
                 
-                // Store the exit rotation as the new base rotation
-                polaroid.style.setProperty('--rotation', `${exitRotation}deg`);
-                
-                setTimeout(resolve, 800);
+                setTimeout(() => {
+                    // Step 2: Update stack (translate in Z)
+                    currentIndex = (currentIndex + 1) % polaroids.length;
+                    updatePolaroids();
+                    
+                    setTimeout(() => {
+                        // Step 3: Translate X back to center
+                        polaroid.style.transition = 'all 0.8s ease';
+                        polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg)`;
+                        
+                        // Store the exit rotation as the new base rotation
+                        polaroid.style.setProperty('--rotation', `${exitRotation}deg`);
+                        
+                        setTimeout(resolve, 800);
+                    }, 300);
+                }, 800);
             });
         }
         
@@ -480,12 +493,8 @@
             
             const currentPolaroid = polaroids[currentIndex];
             
-            // Animate exit
+            // Animate exit (includes stack update)
             await animateExit(currentPolaroid);
-            
-            // Update stack
-            currentIndex = (currentIndex + 1) % polaroids.length;
-            updatePolaroids();
             
             // Reset transition state
             isTransitioning = false;
