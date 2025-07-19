@@ -426,6 +426,60 @@
             updatePolaroids();
         }
         
+        // Animation timing constants
+        const ANIMATION_TIMING = {
+            STEP1_DURATION: 500,    // Step 1: Translate in X duration (ms)
+            STEP2_DURATION: 300,       // Step 2: Delay after step 1 (ms)
+            STEP3_DURATION: 300,    // Step 3: Translate X back duration (ms)
+        };
+        
+        // Transform management system
+        class TransformManager {
+            constructor(element) {
+                this.element = element;
+                this.translateX = 0;
+                this.translateY = 0;
+                this.rotate = 0;
+                this.scale = 1;
+                this.apply();
+            }
+            
+            setTranslateX(value) {
+                this.translateX = value;
+                this.apply();
+            }
+            
+            setTranslateY(value) {
+                this.translateY = value;
+                this.apply();
+            }
+            
+            setRotate(value) {
+                this.rotate = value;
+                this.apply();
+            }
+            
+            setScale(value) {
+                this.scale = value;
+                this.apply();
+            }
+            
+            addTranslateX(value) {
+                this.translateX += value;
+                this.apply();
+            }
+            
+            apply() {
+                this.element.style.transform = `translate(calc(-50% + ${this.translateX}px), calc(-50% + ${this.translateY}px)) rotate(${this.rotate}deg) scale(${this.scale})`;
+            }
+        }
+        
+        // Initialize transform managers for each polaroid
+        const transformManagers = {};
+        polaroids.forEach((polaroid, index) => {
+            transformManagers[index] = new TransformManager(polaroid);
+        });
+        
         function updatePolaroidState(polaroid, index, totalPolaroids) {
             const stackPosition = (index - currentIndex + totalPolaroids) % totalPolaroids;
             
@@ -435,10 +489,15 @@
             // Calculate scale based on stack position
             const scale = Math.max(0.6, 1 - (stackPosition * 0.1));
             
-            // Apply transformations (no opacity changes)
+            // Get the transform manager for this polaroid
+            const manager = transformManagers[index];
+            
+            // Update rotation and scale, but preserve translateX
             const rotation = polaroid.style.getPropertyValue('--rotation') || '0deg';
-            polaroid.style.transition = 'all 0.3s ease';
-            polaroid.style.transform = `translate(-50%, -50%) rotate(${rotation}) scale(${scale})`;
+            manager.setRotate(parseFloat(rotation));
+            manager.setScale(scale);
+            
+            polaroid.style.transition = `all ${ANIMATION_TIMING.STEP2_DURATION}ms ease`;
             polaroid.style.opacity = '1';
             polaroid.style.zIndex = zIndex;
         }
@@ -453,6 +512,9 @@
         
         function animateExit(polaroid) {
             return new Promise((resolve) => {
+                const polaroidIndex = Array.from(polaroids).indexOf(polaroid);
+                const manager = transformManagers[polaroidIndex];
+                
                 const exitDirection = Math.random() < 0.5 ? 'right' : 'left';
                 let exitRotation;
                 
@@ -465,25 +527,27 @@
                 const translateX = exitDirection === 'right' ? 600 : -600;
                 
                 // Step 1: Translate in X to the left or right
-                polaroid.style.transition = 'all 0.8s ease';
-                polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg) translateX(${translateX}px)`;
+                polaroid.style.transition = `all ${ANIMATION_TIMING.STEP1_DURATION}ms ease`;
+                manager.addTranslateX(translateX);
                 
                 setTimeout(() => {
-                    // Step 2: Update stack (translate in Z)
+                    // Step 2: Update stack (translate in Z) and apply translateX
                     currentIndex = (currentIndex + 1) % polaroids.length;
                     updatePolaroids();
                     
+                    // The translateX is already applied from step 1
+                    
                     setTimeout(() => {
                         // Step 3: Translate X back to center
-                        polaroid.style.transition = 'all 0.8s ease';
-                        polaroid.style.transform = `translate(-50%, -50%) rotate(${exitRotation}deg)`;
+                        polaroid.style.transition = `all ${ANIMATION_TIMING.STEP3_DURATION}ms ease`;
+                        manager.setTranslateX(0);
                         
                         // Store the exit rotation as the new base rotation
                         polaroid.style.setProperty('--rotation', `${exitRotation}deg`);
                         
-                        setTimeout(resolve, 800);
-                    }, 300);
-                }, 800);
+                        setTimeout(resolve, ANIMATION_TIMING.STEP3_DURATION);
+                    }, ANIMATION_TIMING.STEP2_DURATION);
+                }, ANIMATION_TIMING.STEP1_DURATION);
             });
         }
         
@@ -505,7 +569,7 @@
             if (!isTransitioning) {
                 nextPolaroid();
             }
-        }, 3000);
+        }, 5000);
         
         // Initialize
         initializePolaroids();
