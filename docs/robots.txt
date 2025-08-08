@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of main content
+Allow: /index.html
+Allow: /projects.html
+Allow: /dues.html
+Allow: /projects/
+Allow: /img/
+
+# Sitemap
+Sitemap: https://wakenmake.shop/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1 
