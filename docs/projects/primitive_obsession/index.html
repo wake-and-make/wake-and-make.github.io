@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../img/wakenmake_favicon.svg" />
-    <title>Wake and Make - Primitive Obsession</title>
+    <title>Primitive Obsession - Interactive Art Installation | Wake and Make San Francisco</title>
+    <meta name="description" content="Primitive Obsession is a large-scale volumetric display art piece debuting in 2025. An interactive 20x20x20 foot LED installation by Wake and Make San Francisco featuring geometric digital art.">
+    <meta name="keywords" content="primitive obsession art piece, interactive art installation, volumetric display, LED art, san francisco art, wake and make, geometric art, digital installation">
+    <link rel="canonical" href="https://wakenmake.shop/projects/primitive_obsession/">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://wakenmake.shop/projects/primitive_obsession/">
+    <meta property="og:title" content="Primitive Obsession - Interactive Art Installation | Wake and Make">
+    <meta property="og:description" content="A large-scale volumetric display art piece featuring interactive games, crowd reactive effects, and live VJ'd music-reactive visuals in a 20x20x20 foot LED installation.">
+    <meta property="og:image" content="https://wakenmake.shop/projects/primitive_obsession/resources/source/zooming.webp">
+    <meta property="og:site_name" content="Wake and Make">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://wakenmake.shop/projects/primitive_obsession/">
+    <meta property="twitter:title" content="Primitive Obsession - Interactive Art Installation">
+    <meta property="twitter:description" content="A large-scale volumetric display art piece featuring interactive games, crowd reactive effects, and live VJ'd music-reactive visuals in a 20x20x20 foot LED installation.">
+    <meta property="twitter:image" content="https://wakenmake.shop/projects/primitive_obsession/resources/source/zooming.webp">
     <style>
         body {
             font-family: monospace;
@@ -201,15 +220,16 @@
     <section>
         <div class="project-content">
             <div class="project-header">
-                <h2>Primitive Obsession</h2>
-                <p>A large-scale volumetric display debuting in 2025.</p>
+                <h1 style="font-size: 2.5em; margin: 0 0 20px 0;">Primitive Obsession</h1>
+                <h2 style="font-size: 1.5em; margin: 0 0 20px 0;">Interactive Art Installation & Volumetric Display</h2>
+                <p>A large-scale volumetric display art piece debuting in 2025.</p>
                 <p><a href="red.html" style="color: white; text-decoration: underline; font-style: italic;">red.it.be</a></p>
             </div>
 
             <div class="project-gallery">
-                            <img src="resources/source/zooming.webp" alt="Project Demo" class="gallery-img" onclick="openLightbox(this)">
-            <img src="resources/source/2x2x2_v2.jpg" alt="2x2x2 Array Rendering" class="gallery-img" onclick="openLightbox(this)">
-            <img src="resources/source/3x3x3_v2.jpg" alt="3x3x3 Array Rendering" class="gallery-img" onclick="openLightbox(this)">
+                            <img src="resources/source/zooming.webp" alt="Primitive Obsession interactive art installation demo showing volumetric LED display" class="gallery-img" onclick="openLightbox(this)">
+            <img src="resources/source/2x2x2_v2.jpg" alt="Primitive Obsession 2x2x2 LED array rendering showing geometric art patterns" class="gallery-img" onclick="openLightbox(this)">
+            <img src="resources/source/3x3x3_v2.jpg" alt="Primitive Obsession 3x3x3 LED array rendering displaying complex volumetric art piece" class="gallery-img" onclick="openLightbox(this)">
                 <iframe src="drawing.pdf" title="Project Drawing"></iframe>
             </div>
 
@@ -246,6 +266,67 @@
             </div>
         </div>
     </section>
+    
+    <!-- CreativeWork Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "@id": "https://wakenmake.shop/projects/primitive_obsession/",
+      "name": "Primitive Obsession",
+      "alternateName": "Primitive Obsession Art Installation",
+      "description": "A large-scale volumetric display art installation featuring interactive games, crowd reactive effects, and live VJ'd music-reactive visuals in a 20x20x20 foot LED structure",
+      "url": "https://wakenmake.shop/projects/primitive_obsession/",
+      "image": [
+        "https://wakenmake.shop/projects/primitive_obsession/resources/source/zooming.webp",
+        "https://wakenmake.shop/projects/primitive_obsession/resources/source/2x2x2_v2.jpg",
+        "https://wakenmake.shop/projects/primitive_obsession/resources/source/3x3x3_v2.jpg"
+      ],
+      "creator": {
+        "@type": "Organization",
+        "name": "Wake'n'Make",
+        "url": "https://wakenmake.shop",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "San Francisco",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        }
+      },
+      "dateCreated": "2023",
+      "datePublished": "2025",
+      "genre": ["Interactive Art", "Digital Art", "Installation Art", "Volumetric Display"],
+      "keywords": "primitive obsession, art piece, interactive installation, volumetric display, LED art, geometric art, digital installation, San Francisco art",
+      "artform": "Digital Installation",
+      "artMedium": ["LED", "Digital Technology", "Interactive Electronics"],
+      "size": "12 feet x 12 feet x 12 feet",
+      "material": ["WS2815 LEDs", "EMT Conduit", "ArtNET Controllers", "TouchDesigner"],
+      "about": [
+        {
+          "@type": "Thing",
+          "name": "Interactive Art"
+        },
+        {
+          "@type": "Thing", 
+          "name": "Volumetric Display Technology"
+        },
+        {
+          "@type": "Thing",
+          "name": "Geometric Art"
+        }
+      ],
+      "mainEntity": {
+        "@type": "VisualArtwork",
+        "name": "Primitive Obsession",
+        "artform": "Installation",
+        "artMedium": "Digital LED Display",
+        "artist": {
+          "@type": "Organization",
+          "name": "Wake'n'Make"
+        }
+      }
+    }
+    </script>
     
     <!-- Lightbox modal -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
